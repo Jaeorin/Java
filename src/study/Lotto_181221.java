@@ -39,7 +39,6 @@ public class Lotto_181221 {
 
 			int b = r.nextInt(45) + 1;
 			lotto[a] = b;
-
 		}
 
 		lotto = mySort(lotto); // 랜덤으로 뽑은 숫자를 적은 숫자대로 정렬
