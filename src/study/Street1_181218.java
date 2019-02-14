@@ -1,6 +1,6 @@
 package study;
 
-public class Street {
+public class Street1_181218 {
 	
 	public static void main(String[] args) {
 

@@ -1,6 +1,6 @@
 package study;
 
-public class Var2 {
+public class Var2_181218 {
 	public static void main(String[] args) {
 		int num = 20;
 		System.out.println(num);
@@ -28,15 +28,17 @@ public class Var2 {
 		System.out.println(6%3); //% : 값을 나눈 뒤 나머지 값을 표시
 		
 		//부등호를 이용한 boolean 타입(true, false) 변수 사용
-		System.out.println(1==1); //== : 앞뒤의 값이 같은지 여부
+		//System.out.println(1==1); //== : 앞뒤의 값이 같은지 여부
 		System.out.println(1==2);
 		System.out.println(1<99);
 		System.out.println(1>99);
 		System.out.println(1<=1); //<= : 좌측 값이 우측 값보다 작거나 같은지 여부
 		System.out.println(1>=1); //>= : 위와 반대
-		System.out.println(1!=1); //!= : 앞이 뒤의 값과 다른지 여부
+		//System.out.println(1!=1); //!= : 앞이 뒤의 값과 다른지 여부
 		System.out.println(1!=99);
 		System.out.println(!true); //값 앞에 ! : 완전부정
 		System.out.println(!false);
+
 	}
+
 }
