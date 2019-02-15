@@ -2,6 +2,10 @@ package study_190215;
 
 public class Animal {
 
+	public Animal() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	String name;
 	int age;
 	// 여기까지 선언
