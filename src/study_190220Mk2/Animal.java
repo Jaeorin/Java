@@ -1,7 +1,7 @@
 package study_190220Mk2;
 
-public class Animal {
+interface Animal {
+	public abstract void getName();
+	void sound();
 	
-	String type = "µ¿¹°";	
-
 }

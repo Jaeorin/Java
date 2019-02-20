@@ -1,6 +1,6 @@
 package study_190220Mk2;
 
-public class Bird implements Animal {
+public class Snake implements Animal {
 	String name;
 	
 	public void getName() {
@@ -9,7 +9,8 @@ public class Bird implements Animal {
 	}
 
 	public void sound() {
-		System.out.println("Â±Â±");
+		System.out.println("½¬ÀÍ");
 	}
+
 
 }
