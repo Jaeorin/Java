@@ -1,4 +1,4 @@
-package study_190215mk2;
+package study_190215Mk2;
 
 //질럿 생산
 //클래스는 대문자로 시작, 클래스가 아니면 소문자로 시작

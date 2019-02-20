@@ -1,4 +1,4 @@
-package study_190215mk2;
+package study_190215Mk2;
 
 public class StarApp {
 	
