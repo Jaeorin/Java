@@ -1,31 +1,31 @@
 package report_190221;
 
 public abstract class TerranUnit implements StarCraft{
+
+	String repair = "Manually Repair with SCV";
+	String type = "Terran";
 	
-	public static int attack = 20;
-	public static int armor = 1;
-	
-	public void status() {
-		System.out.println("attack :" + attack);
-		System.out.println("armor  :" + armor);
-	}
-	
-	public void repair() {
-		System.out.println("Manually Repair with SCV");		
+	@Override
+	public String type() {
+		return type;
+	}	
+	@Override
+	public String repair() {
+		return repair;		
 	}
 	
 	public static void upgradeAttack() {
-		attack = attack + 2;
+		SCV.attack = SCV.attack + 0;
+		SiegeTank.attack = SiegeTank.attack + 2;
 		System.out.println("Terran Waepon Upgrade Complete");	
 		System.out.println();
 	}
 	
 	public static void upgradeArmor() {
-		armor = armor + 1;
+		SCV.armor = SCV.armor + 1;
+		SiegeTank.armor = SiegeTank.armor + 1;
 		System.out.println("Terran Armor Upgrade Complete");	
 		System.out.println();
 	}
-
-	public abstract void health();
 	
 }

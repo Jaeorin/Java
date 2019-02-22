@@ -1,31 +1,31 @@
 package report_190221;
 
 public abstract class ZergUnit implements StarCraft {
+
+	String repair = "Auto Recovory";
+	String type = "Zerg";
 	
-	public static int attack = 10;
-	public static int armor = 0;
-	
-	public void status() {
-		System.out.println("attack :" + attack);
-		System.out.println("armor  :" + armor);
-	}
-	
-	public void repair() {
-		System.out.println("Auto Recovory");		
+	@Override
+	public String type() {
+		return type;
+	}	
+	@Override
+	public String repair() {
+		return repair;		
 	}
 	
 	public static void upgradeAttack() {
-		attack = attack + 1;
+		Hydralisk.attack = Hydralisk.attack + 1;
+		Ultralisk.attack = Ultralisk.attack + 3;
 		System.out.println("Zerg Waepon Upgrade Complete");	
 		System.out.println();
 	}
 	
 	public static void upgradeArmor() {
-		armor = armor + 1;
+		Hydralisk.armor = Hydralisk.armor + 1;
+		Ultralisk.armor = Ultralisk.armor + 1;
 		System.out.println("Zerg Armor Upgrade Complete");	
 		System.out.println();
 	}
-	
-	public abstract void health();
 	
 }

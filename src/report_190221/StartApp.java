@@ -2,31 +2,74 @@ package report_190221;
 
 public class StartApp {
 	
-	public static void productUnit(StarCraft unit) {
-
-		unit.status();
-		unit.getName();
-		unit.range();
-		unit.repair();
-		unit.health();
-		unit.shield();
-		System.out.println();
-
-	}
-	
 	public static void main(String[] args) {
 		
-		ProtossUnit.upgradeAttack();
+		System.out.println("-----------유닛 생성-----------");
+		System.out.println("");
 		
 		Zealot zealot1 = new Zealot();
-		productUnit(zealot1);
+		UserInterface.productUnit(zealot1);
 		
-		SCV scv1 = new SCV();
-		productUnit(scv1);
+		SiegeTank siegetank1 = new SiegeTank();
+		UserInterface.productUnit(siegetank1);
 		
 		Hydralisk hydralisk1 = new Hydralisk();
-		productUnit(hydralisk1);
+		UserInterface.productUnit(hydralisk1);
 		
+		
+		System.out.println("");
+		System.out.println("-----------유닛 정보 확인-----------");
+		System.out.println("");
+		
+		UserInterface.infomation(zealot1);
+		UserInterface.infomation(siegetank1);
+		UserInterface.infomation(hydralisk1);
+		
+		
+		System.out.println("");
+		System.out.println("-----------유닛 업그레이드-----------");
+		System.out.println("");
+		
+		UserInterface.infomation(zealot1);
+		ProtossUnit.upgradeAttack();
+		UserInterface.infomation(siegetank1);
+		ProtossUnit.upgradeArmor();
+		UserInterface.infomation(hydralisk1);
+		
+		
+		System.out.println("");
+		System.out.println("-----------유닛 공격-----------");
+		System.out.println("");
+		
+		siegetank1.combat(zealot1);
+		siegetank1.combat(zealot1);
+		siegetank1.combat(zealot1);
+		siegetank1.combat(zealot1);
+		siegetank1.combat(zealot1);
+		siegetank1.combat(zealot1);
+		
+		siegetank1.combat(hydralisk1);
+		hydralisk1.combat(siegetank1);
+		
+		
+		System.out.println("");
+		System.out.println("-----------잘못된 명령-----------");
+		System.out.println("");
+		
+		System.out.println("죽인 대상을 공격을 시도할 때");
+		siegetank1.combat(zealot1);
+		System.out.println("죽은 대상으로 공격을 시도할 때");
+		zealot1.combat(siegetank1);
+		
+		Zealot zealot2 = new Zealot();
+		UserInterface.productUnit(zealot2);
+		Zealot zealot3 = new Zealot();
+		UserInterface.productUnit(zealot3);
+		
+		System.out.println("자기 자신에게 공격을 시도할 때");
+		zealot2.combat(zealot2);
+		System.out.println("같은 종족에게 공격을 시도할 때");
+		zealot2.combat(zealot3);		
 	}
 	
 }

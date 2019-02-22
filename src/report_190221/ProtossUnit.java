@@ -2,29 +2,30 @@ package report_190221;
 
 public abstract class ProtossUnit implements StarCraft{
 	
-	static int attack = 30;
-	static int armor = 2;
+	String repair = "Shield Recovory Only";
+	String type = "Protoss";
 	
-	public void status() {
-		System.out.println("attack :" + attack);
-		System.out.println("armor  :" + armor);
-	}
-	
-	public void repair() {
-		System.out.println("Shield Recovory Only");		
+	@Override
+	public String type() {
+		return type;
+	}	
+	@Override
+	public String repair() {
+		return repair;		
 	}
 	
 	public static void upgradeAttack() {
-		attack = attack + 3;
+		Zealot.attack = Zealot.attack + 2;
+		Dragoon.attack = Dragoon.attack + 2;
 		System.out.println("Protoss Waepon Upgrade Complete");	
 		System.out.println();
 	}
 	
 	public static void upgradeArmor() {
-		armor = armor + 1;
+		Zealot.armor = Zealot.armor + 1;
+		Dragoon.armor = Dragoon.armor + 1;
 		System.out.println("Protoss Armor Upgrade Complete");	
 		System.out.println();
 	}
-	
-	
+		
 }

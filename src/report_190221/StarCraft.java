@@ -2,11 +2,16 @@ package report_190221;
 
 public interface StarCraft {
 
-	void status();
-	void getName();
-	void range();
-	void repair();
-	void health();
-	void shield();
+	String type();
+	int attack();
+	int armor();
+	String name();
+	String range();
+	String repair();
+	int health();
+	int shield();
+	int sethealth(int health);
+	int setshield(int shield);
+	void combat(StarCraft unit);
 
 }
