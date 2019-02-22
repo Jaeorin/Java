@@ -43,48 +43,9 @@ public class SiegeTank extends TerranUnit{
 		this.shield = shield;
 		return shield;
 	}
-	public void combat(StarCraft unit) {
-		if (this.health <= 0) {
-			System.out.println("Not a valid command : Attacker " + this.name() + " is already Dead");
-			System.out.println();	
-		}else if (unit.health() <= 0){
-			System.out.println("Not a valid command : Target " + unit.name() + " is already Dead");
-			System.out.println();
-		}else if (this == unit) {
-			System.out.println("Not a valid command : Attacker and Target is same");
-			System.out.println();	
-		}else if (this.type() == unit.type()) {
-			System.out.println("Not a valid command : Attacker and Target are same race");
-			System.out.println();
-		}else {
-			System.out.println("The " + this.name() + " attacked the " + unit.name());
-			System.out.println();
-			unit.setshield(unit.shield() - attack);
-			if (unit.shield() >= 0) {
-				System.out.println("Target        : " + unit.type() + " " + unit.name());
-				System.out.println("Shield        : " + unit.shield());
-				System.out.println("Health        : " + unit.health());
-				System.out.println();
-			}else if(unit.shield() < 0) {
-				int excessiveDamage = unit.shield();
-				unit.sethealth(unit.health() + excessiveDamage + unit.armor());
-				unit.setshield(0);
-				if (unit.health() > 0) {
-					System.out.println("Target        : " + unit.type() + " " + unit.name());
-					System.out.println("Shield        : " + unit.shield());
-					System.out.println("Health        : " + unit.health());
-					System.out.println();
-				}else {
-					unit.sethealth(0);
-					System.out.println("Target        : " + unit.type() + " " + unit.name());
-					System.out.println("Shield        : " + unit.shield());
-					System.out.println("Health        : " + unit.health());
-					System.out.println("Target " + unit.name() + " is Terminated successfully");
-					System.out.println();
-					
-				}
-			}
-		}
+	@Override
+	public void combat(StarCraft unit1, StarCraft unit2) {
+		UserInterface.combat(unit1, unit2);
 	}
 	
 }

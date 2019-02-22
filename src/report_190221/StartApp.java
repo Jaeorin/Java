@@ -32,24 +32,24 @@ public class StartApp {
 		
 		UserInterface.infomation(zealot1);
 		ProtossUnit.upgradeAttack();
-		UserInterface.infomation(siegetank1);
+		UserInterface.infomation(zealot1);
 		ProtossUnit.upgradeArmor();
-		UserInterface.infomation(hydralisk1);
+		UserInterface.infomation(zealot1);
 		
 		
 		System.out.println("");
 		System.out.println("-----------유닛 공격-----------");
 		System.out.println("");
 		
-		siegetank1.combat(zealot1);
-		siegetank1.combat(zealot1);
-		siegetank1.combat(zealot1);
-		siegetank1.combat(zealot1);
-		siegetank1.combat(zealot1);
-		siegetank1.combat(zealot1);
+		siegetank1.combat(siegetank1, zealot1);
+		siegetank1.combat(siegetank1, zealot1);
+		siegetank1.combat(siegetank1, zealot1);
+		siegetank1.combat(siegetank1, zealot1);
+		siegetank1.combat(siegetank1, zealot1);
+		siegetank1.combat(siegetank1, zealot1);
 		
-		siegetank1.combat(hydralisk1);
-		hydralisk1.combat(siegetank1);
+		siegetank1.combat(siegetank1, hydralisk1);
+		hydralisk1.combat(hydralisk1, siegetank1);
 		
 		
 		System.out.println("");
@@ -57,9 +57,9 @@ public class StartApp {
 		System.out.println("");
 		
 		System.out.println("죽인 대상을 공격을 시도할 때");
-		siegetank1.combat(zealot1);
+		siegetank1.combat(siegetank1, zealot1);
 		System.out.println("죽은 대상으로 공격을 시도할 때");
-		zealot1.combat(siegetank1);
+		zealot1.combat(zealot1, siegetank1);
 		
 		Zealot zealot2 = new Zealot();
 		UserInterface.productUnit(zealot2);
@@ -67,9 +67,9 @@ public class StartApp {
 		UserInterface.productUnit(zealot3);
 		
 		System.out.println("자기 자신에게 공격을 시도할 때");
-		zealot2.combat(zealot2);
+		zealot2.combat(zealot2, zealot2);
 		System.out.println("같은 종족에게 공격을 시도할 때");
-		zealot2.combat(zealot3);		
+		zealot2.combat(zealot2, zealot3);		
 	}
 	
 }
