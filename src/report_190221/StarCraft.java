@@ -12,6 +12,6 @@ public interface StarCraft {
 	int shield();
 	int sethealth(int health);
 	int setshield(int shield);
-	void combat(StarCraft unit);
+	void combat(StarCraft unit1, StarCraft unit2);
 
 }
