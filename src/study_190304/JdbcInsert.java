@@ -3,8 +3,6 @@ package study_190304;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
 
 public class JdbcInsert {
 
@@ -39,6 +37,7 @@ public class JdbcInsert {
 			// 실행
 			int rowCount = pstmt.executeUpdate(); // SELECT문 이외의 INSERT,UPDATE,DELETE는
 			                           // executeUpdate()를 호출해야함.
+			System.out.println(rowCount);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

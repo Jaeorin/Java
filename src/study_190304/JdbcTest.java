@@ -14,6 +14,10 @@ public class JdbcTest {
 		PreparedStatement pstmt = null; // sql문장을 가진 문장객체
 		ResultSet rs = null;  // pstmt가 가진 문장이 SELECT문일때 결과를 ResultSet으로 가져옴.
 		
+		System.out.println(con);
+		System.out.println(pstmt);
+		System.out.println(rs);
+		
 		try {
 			// 1) DBMS(오라클) 드라이버 클래스 로딩
 			Class.forName("oracle.jdbc.OracleDriver");

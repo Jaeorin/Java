@@ -34,6 +34,7 @@ public class GBBGame {
 		
 		while(true) {
 			Scanner sc = new Scanner(System.in);
+			System.out.println(sc);
 			System.out.println("남은 목숨 : " + (3 - count));
 			System.out.println("시작!!");
 			String input = sc.nextLine();
@@ -57,7 +58,7 @@ public class GBBGame {
 				
 			for(int i1 = 0; i1 < arr.length; i1++) {
 				if (user.equals(arr[i1])) {
-					for(int i2 = 0; i2 < arr2.length; i2++) {
+					for(int i2 = 0; i2 < arr2.length;) {
 						if(computer.equals(arr2[i2])) {
 							System.out.println("졌습니다");
 							count++;

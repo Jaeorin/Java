@@ -29,6 +29,7 @@ public class GBBGame2 {
 		
 		while(true) {
 			Scanner sc = new Scanner(System.in);
+			System.out.println(sc);
 			System.out.println("Ω√¿€!!");
 			String input = sc.nextLine();
 
