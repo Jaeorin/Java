@@ -84,6 +84,8 @@ class Score{
 				position[i] = 0;
 			}
 			myScore++;
+			strike = 0;
+			ball = 0;
 			System.out.println("Your team : " + myScore + " vs " + "Opponent team : " + opponentScore);
 			change = true;
 		}else {
@@ -94,6 +96,8 @@ class Score{
 				position[i] = 0;
 			}
 			opponentScore++;
+			strike = 0;
+			ball = 0;
 			System.out.println("Your team : " + myScore + " vs " + "Opponent team : " + opponentScore);
 		}
 		return position;
