@@ -40,6 +40,7 @@ public class CastApp {
 		k.zigu_play();
 		
 		Zigu z1 = (Zigu) k;
+		System.out.println(z1);
 		
 	}
 }
