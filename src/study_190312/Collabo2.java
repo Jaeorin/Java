@@ -68,8 +68,12 @@ public class Collabo2 {
 		}
 		
 		for(int number = 0; number > params.length; number++) {
-			if(!key[number].equals(naver[number])) {
-				System.out.println(naver[number] + "값이 없습니다");
+			String navername = naver[number];
+			String keyname = key[number];
+			System.out.println(navername);
+			System.out.println(keyname);
+			if(!keyname.equals(navername)) {
+				System.out.println(navername + "값이 없습니다");
 				stateCode = -1;
 			}
 		}
@@ -94,7 +98,7 @@ public class Collabo2 {
 	
 	
 	public static void main(String[] args) {
-		
+		// https://news.naver.com/main/read.nhn?sid1=100&oid=001&aid=0000000001
 		Collabo2 co = new Collabo2();
 		Util util = new Util();
 		Scanner sc = new Scanner(System.in);

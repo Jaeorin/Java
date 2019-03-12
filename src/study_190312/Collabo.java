@@ -16,10 +16,10 @@ public class Collabo {
 	
 	public void addressParsing(String address) {
 		
-		System.out.println("주소             : " + domain[2]);
-		System.out.println("분야번호  (sid1) : " + sid1     );
-		System.out.println("신문사번호(oid ) : " + oid      );
-		System.out.println("게시글번호(aid ) : " + aid      );
+		System.out.println("주          소 (address) : " +               domain[2]);
+		System.out.println("분  야  번  호 (   sid1) : " + sid1);
+		System.out.println("신 문 사 번 호 (    oid) : " + oid);
+		System.out.println("게 시 글 번 호 (    aid) : " + aid);
 		
 	}
 	
