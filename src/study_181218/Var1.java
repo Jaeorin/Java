@@ -2,16 +2,16 @@ package study_181218;
 
 public class Var1 {
 	public static void main(String args[]) {
-		//Å¸ÀÔ
-		System.out.println("¾È³ç ÀÚ¹Ù"); //¹®ÀÚ¿­ String
-		System.out.println(7); //Á¤¼ö int(integer)
-		System.out.println(9.8); //½Ç¼ö float, double
-		System.out.println('°¡'); //¹®ÀÚ char(character)
+		//Å¸ï¿½ï¿½
+		System.out.println("ï¿½È³ï¿½ ï¿½Ú¹ï¿½"); //ï¿½ï¿½ï¿½Ú¿ï¿½ String
+		System.out.println(7); //ï¿½ï¿½ï¿½ï¿½ int(integer)
+		System.out.println(9.8); //ï¿½Ç¼ï¿½ float, double
+		System.out.println('ê°€'); //ï¿½ï¿½ï¿½ï¿½ char(character)
 		System.out.println(true); //boolean
-		System.out.println(false); //Âü, °ÅÁþ
+		System.out.println(false); //ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½
 
-		//Å¸ÀÔÁöÁ¤ + º¯¼ö = °ª
-		String name="´ÏÄÚ";
+		//Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ + ï¿½ï¿½ï¿½ï¿½ = ï¿½ï¿½
+		String name="ï¿½ï¿½ï¿½ï¿½";
 		System.out.println(name);
 		
 		int num=80;
@@ -20,7 +20,7 @@ public class Var1 {
 		char ch='a';
 		System.out.println(ch);
 		
-		boolean check=true; //°æ¿ìÀÇ ¼ö°¡ 2°¡Áö(true, false)
+		boolean check=true; //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ï¿½ï¿½(true, false)
 		System.out.println(check);
 		
 		double number=10.8;
