@@ -34,6 +34,8 @@ class News {
 
 	private String address;
 	private String title;
+	private String creadtedDate;
+	
 	public String getAddress() {
 		return address;
 	}
@@ -46,6 +48,13 @@ class News {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	public String getCreadtedDate() {
+		return creadtedDate;
+	}
+	public void setCreadtedDate(String creadtedDate) {
+		this.creadtedDate = creadtedDate;
+	}
+	
 }
 
 
@@ -88,14 +97,18 @@ class Crawling {
 		// # : id로 찾음, 스트링으로 가져옴
 		// Elements는 내부적으로 Element를 가지고 있음
 		Elements articleTitle = doc.select("#articleTitle");
+		Elements createDate = doc.select(".t11");
 		Element title = null;
+		Element date = null;
 		
 		try {
 			title = articleTitle.get(0);
+			date = createDate.get(0);
 			
 			News news = new News();
 			news.setAddress(address);
 			news.setTitle(title.text());
+			news.setCreadtedDate(date.text());
 			
 			array.add(news);
 			
@@ -138,15 +151,19 @@ public class NewsApp {
 			
 			count++;
 			
-			if(count == 10) break;
+			if(count == 100) break;
 
 		}
 		
 		int size = craw.array.size();
 		
+		System.out.println();
+		
 		for(int i = 0; i < size; i++) {
 			System.out.println(craw.array.get(i).getTitle());
 			System.out.println(craw.array.get(i).getAddress());
+			System.out.println(craw.array.get(i).getCreadtedDate());
+			System.out.println();
 		}
 		
 	}
