@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class Private {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 
 		gameFrame gameframe = new gameFrame();
@@ -18,6 +19,7 @@ public class Private {
 
 }
 
+@SuppressWarnings("serial")
 class gameFrame extends JFrame implements KeyListener, Runnable {
 
 	boolean KeyUp = false;
@@ -32,7 +34,18 @@ class gameFrame extends JFrame implements KeyListener, Runnable {
 	int counter;
 	int enemyWidht, enemyHeight;
 	int missileWidht, missileHeight;
+	int backgroundMove = 0;
+	int[] backgroundMoveSpeed = {0, 0, 0};
+	
+	int playerSpeed;
+	int missileSpeed;
+	int fireSpeed;
+	int enemySpeed;
+	int playerStatus = 0;
+	int gameScore;
+	int playerLife;
 
+	Image backgroundImg;
 	Image meImg;
 	Image missileImg;
 	Image enemyImg;
@@ -47,8 +60,8 @@ class gameFrame extends JFrame implements KeyListener, Runnable {
 
 	Toolkit toolkit = Toolkit.getDefaultToolkit();
 
-	ArrayList missileList = new ArrayList();
-	ArrayList enemyList = new ArrayList();
+	ArrayList<Missile> missileList = new ArrayList<>();
+	ArrayList<Enemy> enemyList = new ArrayList<>();
 
 	gameFrame() {
 
@@ -80,10 +93,10 @@ class gameFrame extends JFrame implements KeyListener, Runnable {
 		missileImg = toolkit.getImage("D:\\workspace\\Java\\src\\private_190313\\missile.png");
 		enemyImg = toolkit.getImage("D:\\workspace\\Java\\src\\private_190313\\enemy.png");
 
-		enemyWidht = ImageWidthValue("D:\\workspace\\Java\\src\\private_190313\\enemy.png")
-		enemyHeight = ImageWidthValue
-		missileWidht
-		missileHeight
+		enemyWidht = ImageWidthValue("D:\\workspace\\Java\\src\\private_190313\\enemy.png");
+		enemyHeight = ImageHeightValue("D:\\workspace\\Java\\src\\private_190313\\enemy.png");
+		missileWidht = ImageWidthValue("D:\\workspace\\Java\\src\\private_190313\\missile.png");
+		missileHeight = ImageHeightValue("D:\\workspace\\Java\\src\\private_190313\\missile.png");
 
 	}
 
@@ -154,13 +167,7 @@ class gameFrame extends JFrame implements KeyListener, Runnable {
 			missile = (Missile) (missileList.get(i));
 			buffGraphics.drawImage(missileImg, missile.x, missile.y, this);
 
-			missile.move();
-
-			if (missile.y > fHeight) {
-				missileList.remove(i);
-			}
 		}
-
 	}
 
 	@Override
@@ -232,6 +239,22 @@ class gameFrame extends JFrame implements KeyListener, Runnable {
 
 		}
 
+		for (int i = 0; i < missileList.size(); ++i) {
+			missile = (Missile) missileList.get(i);
+			missile.move();
+			if (missile.y > fHeight) {
+				missileList.remove(i);
+			}
+			for (int j = 0; j < enemyList.size(); ++j) {
+				enemy = (Enemy) enemyList.get(j);
+				if (Crash(missile.x, missile.y, enemy.x, enemy.y, missileWidht, missileHeight, enemyWidht,
+						missileHeight)) {
+					missileList.remove(i);
+					enemyList.remove(j);
+				}
+			}
+
+		}
 	}
 
 	public void enemyProcess() {
@@ -258,6 +281,20 @@ class gameFrame extends JFrame implements KeyListener, Runnable {
 			enemyList.add(enemy);
 		}
 
+	}
+
+	public boolean Crash(int x1, int y1, int x2, int y2, int w1, int h1, int w2, int h2) {
+
+		boolean check = false;
+
+		if (Math.abs((x1 + w1 / 2) - (x2 + w2 / 2)) < (w2 / 2 + w1 / 2)
+				&& Math.abs((y1 + h1 / 2) - (y2 + h2 / 2)) < (h2 / 2 + h1 / 2)) {
+			check = true;
+		} else {
+			check = false;
+		}
+
+		return check;
 	}
 
 	public int ImageWidthValue(String string) {
