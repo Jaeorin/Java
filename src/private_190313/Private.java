@@ -23,8 +23,8 @@ public class Private {
 	public static void main(String[] args) {
 
 		gameFrame gameframe = new gameFrame();
-
-	}
+		
+		}
 
 }
 
@@ -57,10 +57,8 @@ class gameFrame extends JFrame implements KeyListener, Runnable {
 	int gameScore; // 점수
 	int playerLife; // 목숨
 	int loopCounter; // run()함수의 무한루프 횟수를 기록, 객체들의 행동 시간 구현
-	
-	// ※중요, 이중 버퍼링 구현에 필요한 함수 선언
-	Image buffImage;
-	Graphics buffGraphics;
+
+
 
 	// 이미지 파일을 받아올 변수 선언
 	Image backgroundImg;
@@ -71,17 +69,22 @@ class gameFrame extends JFrame implements KeyListener, Runnable {
 	Image[] meImg;
 	Image[] explosionImg;
 
-	ArrayList<Missile> missileList = new ArrayList<>();
-	ArrayList<Enemy> enemyList = new ArrayList<>();
-	ArrayList<Explosion> explosionList = new ArrayList<Explosion>();
-
-	Missile missile;
-	Enemy enemy;
-	Explosion explosion;
-
-	Thread thread;
-
+	Missile missile; // 미사일 객체 타입 생성
+	Enemy enemy; // 적 객체 타입 생성
+	Explosion explosion; // 폭팔 모션 객체 타입 생성
 	Toolkit toolkit = Toolkit.getDefaultToolkit();
+	
+	
+
+	ArrayList<Missile> missileList = new ArrayList<>(); // 생성되는 미사일 객체를 저장하기 위한 ArrayList 생성
+	ArrayList<Enemy> enemyList = new ArrayList<>(); // 생성되는 적 객체를 저장하기 위한 ArrayList 생성
+	ArrayList<Explosion> explosionList = new ArrayList<>(); // 생성되는 폭팔모션 객체를 저장하기 위한 ArrayList 생성
+	
+	// ※중요, 이중 버퍼링 구현에 필요한 함수 선언
+	Image buffImage;
+	Graphics buffGraphics;
+
+	
 
 	gameFrame() {
 
@@ -141,7 +144,7 @@ class gameFrame extends JFrame implements KeyListener, Runnable {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		addKeyListener(this);
-		thread = new Thread(this);
+		Thread thread = new Thread(this);
 		thread.start();
 
 	}
@@ -535,65 +538,65 @@ class gameFrame extends JFrame implements KeyListener, Runnable {
 
 	}
 
-}
+	class Missile {
 
-class Missile {
+		int x;
+		int y;
+		int missileSpeed;
+		int angle;
+		int who;
 
-	int x;
-	int y;
-	int missileSpeed;
-	int angle;
-	int who;
+		Missile(int x, int y, int angle, int missileSpeed, int who) {
+			this.x = x;
+			this.y = y;
+			this.who = who;
+			this.angle = angle;
+			this.missileSpeed = missileSpeed;
+		}
 
-	Missile(int x, int y, int angle, int missileSpeed, int who) {
-		this.x = x;
-		this.y = y;
-		this.who = who;
-		this.angle = angle;
-		this.missileSpeed = missileSpeed;
+		public void move() {
+			x -= Math.cos(Math.toRadians(angle)) * missileSpeed;
+			y -= Math.sin(Math.toRadians(angle)) * missileSpeed;
+		}
+
 	}
 
-	public void move() {
-		x -= Math.cos(Math.toRadians(angle)) * missileSpeed;
-		y -= Math.sin(Math.toRadians(angle)) * missileSpeed;
+	class Enemy {
+
+		int x;
+		int y;
+		int enemySpeed;
+
+		Enemy(int x, int y, int enemySpeed) {
+			this.x = x;
+			this.y = y;
+			this.enemySpeed = enemySpeed;
+		}
+
+		public void move() {
+			y += 3;
+		}
+
 	}
 
-}
+	class Explosion {
 
-class Enemy {
+		int x;
+		int y;
+		int imgCounter;
+		int imgScroll;
 
-	int x;
-	int y;
-	int enemySpeed;
+		Explosion(int x, int y, int imgScroll) {
+			this.x = x;
+			this.y = y;
+			this.imgScroll = imgScroll;
+			imgCounter = 0;
+		}
 
-	Enemy(int x, int y, int enemySpeed) {
-		this.x = x;
-		this.y = y;
-		this.enemySpeed = enemySpeed;
-	}
+		public void effect() {
+			imgCounter++;
+		}
 
-	public void move() {
-		y += 3;
-	}
-
-}
-
-class Explosion {
-
-	int x;
-	int y;
-	int imgCounter;
-	int imgScroll;
-
-	Explosion(int x, int y, int imgScroll) {
-		this.x = x;
-		this.y = y;
-		this.imgScroll = imgScroll;
-		imgCounter = 0;
-	}
-
-	public void effect() {
-		imgCounter++;
 	}
 
 }
