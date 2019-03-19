@@ -29,7 +29,7 @@ public class Private {
 }
 
 @SuppressWarnings("serial")
-class gameFrame extends JFrame implements KeyListener, Runnable {
+class gameFrame extends JFrame implements Runnable, KeyListener {
 
 	// 키설정
 	boolean KeyUp = false; // 위
@@ -88,7 +88,7 @@ class gameFrame extends JFrame implements KeyListener, Runnable {
 		// JFrame 클래스가 상속하고 있는 Frame이 가지고 있는 setTitle 함수 실행
 		// 팝업되는 프레임의 제목을 설정
 		setTitle("Song Dragon Flight 2");
-		
+
 		// java.awt.Image 클래스를 참조하는 ImageObserver 인터페이스의 Component가 상속하는
 		// Container.winows클래스의 setSize 함수를 실행
 		// 팝업되는 프레임의 가로,세로크기를 설정
@@ -163,22 +163,37 @@ class gameFrame extends JFrame implements KeyListener, Runnable {
 
 	}
 
-	//
-	public void start() { //
+	// 게임 실행(메인 스택에 gameFrame 객체 생성 시)시 프레임을 시작하는 함수
+	public void start() { // gameFrame함수에서 실행됨
 
+		// JFrame 클래스의 setDefaultCloseOperation함수를 실행
+		// 프레임 우측 상단의 종료 버튼을 눌렀을 때 프로그램을 종료
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		// Component 클래스의 addKeyListener 함수를 실행
+		// 키보드 입력값을 얻음
 		addKeyListener(this);
+
+		// 새로운 스레드 객체 생성
 		Thread thread = new Thread(this);
+
+		// Thread 클래스의 start() 함수를 실행
+		// start()함수로 연산 시작하며 아래 run()함수를 계산하기 시작함
 		thread.start();
 
 	}
 
+	// !!중요!!
+	// implement된 Runnable에 동적바인딩 되어있는 Thread의 run()함수 내용 설정
+	// 프로그램이 실행되는 구조
+	// gameFrame클래스 객체 생성 → gameFrame()함수 실행 → 내부의 start()함수 실행 → 내부의 스레드 실행
+	//  → 내부의 run()함수 실행
 	@Override
 	public void run() {
 
 		try {
 
+			// 게임이 종료되기 전까지 계속 반복됨
 			while (true) {
 
 				keyProcess();
@@ -195,6 +210,138 @@ class gameFrame extends JFrame implements KeyListener, Runnable {
 		} catch (Exception e) {
 
 			e.printStackTrace();
+
+		}
+
+	}
+
+	// implement된 KeyListener에 동적바인딩 되어있는 KeyEventDemo의 keyPressed를 실행
+	// 키보드가 눌러질 때 이벤트 처리
+	@Override
+	public void keyPressed(KeyEvent event) {
+
+		switch (event.getKeyCode()) {
+
+		case KeyEvent.VK_UP:
+
+			KeyUp = true;
+			break;
+
+		case KeyEvent.VK_DOWN:
+
+			KeyDown = true;
+			break;
+
+		case KeyEvent.VK_LEFT:
+
+			KeyLeft = true;
+			break;
+
+		case KeyEvent.VK_RIGHT:
+
+			KeyRight = true;
+			break;
+
+		case KeyEvent.VK_Z:
+
+			KeyZ = true;
+			break;
+
+		}
+
+	}
+
+	// implement된 KeyListener에 동적바인딩 되어있는 KeyEventDemo의 keyReleased를 실행
+	// 키보드가 떼어질 때 이벤트 처리
+	@Override
+	public void keyReleased(KeyEvent event) {
+
+		switch (event.getKeyCode()) {
+
+		case KeyEvent.VK_UP:
+
+			KeyUp = false;
+			break;
+
+		case KeyEvent.VK_DOWN:
+
+			KeyDown = false;
+			break;
+
+		case KeyEvent.VK_LEFT:
+
+			KeyLeft = false;
+			break;
+
+		case KeyEvent.VK_RIGHT:
+
+			KeyRight = false;
+			break;
+
+		case KeyEvent.VK_Z:
+
+			KeyZ = false;
+			break;
+
+		}
+
+	}
+
+	// implement된 KeyListener에 동적바인딩 되어있는 KeyEventDemo의 keyTyped를 실행
+	// 키보드가 타이핑될 떄 이벤트 처리(필요없는 부분이기 때문에 오버라이딩만 함)
+	@Override
+	public void keyTyped(KeyEvent event) {
+
+	}
+
+	// 
+	public void keyProcess() {
+
+		if (KeyUp == true) {
+
+			if (playery > 30) {
+
+				playery -= playerSpeed;
+
+			}
+
+			playerStatus = 0;
+
+		}
+
+		if (KeyDown == true) {
+
+			if (playery + 65 < screenHeight) {
+
+				playery += playerSpeed;
+
+			}
+
+			playerStatus = 0;
+
+		}
+
+		if (KeyLeft == true) {
+
+			if (playerx > 0) {
+
+				playerx -= playerSpeed;
+
+			}
+
+			playerStatus = 0;
+
+		}
+
+		if (KeyRight == true) {
+
+			if (playerx + 190 < screenWidth) {
+
+				playerx += playerSpeed;
+
+			}
+
+			playerStatus = 0;
 
 		}
 
@@ -381,131 +528,6 @@ class gameFrame extends JFrame implements KeyListener, Runnable {
 		buffGraphics.drawString("Enemy Count : " + enemyList.size(), 485, 130);
 		buffGraphics.drawString("x : " + playerx, 485, 150);
 		buffGraphics.drawString("y : " + playery, 485, 170);
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent event) {
-
-		switch (event.getKeyCode()) {
-
-		case KeyEvent.VK_UP:
-
-			KeyUp = true;
-			break;
-
-		case KeyEvent.VK_DOWN:
-
-			KeyDown = true;
-			break;
-
-		case KeyEvent.VK_LEFT:
-
-			KeyLeft = true;
-			break;
-
-		case KeyEvent.VK_RIGHT:
-
-			KeyRight = true;
-			break;
-
-		case KeyEvent.VK_Z:
-
-			KeyZ = true;
-			break;
-
-		}
-
-	}
-
-	@Override
-	public void keyReleased(KeyEvent event) {
-
-		switch (event.getKeyCode()) {
-
-		case KeyEvent.VK_UP:
-
-			KeyUp = false;
-			break;
-
-		case KeyEvent.VK_DOWN:
-
-			KeyDown = false;
-			break;
-
-		case KeyEvent.VK_LEFT:
-
-			KeyLeft = false;
-			break;
-
-		case KeyEvent.VK_RIGHT:
-
-			KeyRight = false;
-			break;
-
-		case KeyEvent.VK_Z:
-
-			KeyZ = false;
-			break;
-
-		}
-
-	}
-
-	@Override
-	public void keyTyped(KeyEvent event) {
-
-	}
-
-	public void keyProcess() {
-
-		if (KeyUp == true) {
-
-			if (playery > 30) {
-
-				playery -= playerSpeed;
-
-			}
-
-			playerStatus = 0;
-
-		}
-
-		if (KeyDown == true) {
-
-			if (playery + 65 < screenHeight) {
-
-				playery += playerSpeed;
-
-			}
-
-			playerStatus = 0;
-
-		}
-
-		if (KeyLeft == true) {
-
-			if (playerx > 0) {
-
-				playerx -= playerSpeed;
-
-			}
-
-			playerStatus = 0;
-
-		}
-
-		if (KeyRight == true) {
-
-			if (playerx + 190 < screenWidth) {
-
-				playerx += playerSpeed;
-
-			}
-
-			playerStatus = 0;
-
-		}
 
 	}
 
