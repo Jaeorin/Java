@@ -797,7 +797,7 @@ class gameFrame extends JFrame implements Runnable, KeyListener {
 		int x;
 		int y;
 		int enemySpeed;
-		int enemyLife = 30;
+		int enemyLife = 10;
 
 		Enemy(int x, int y, int enemySpeed) {
 
