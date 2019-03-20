@@ -56,12 +56,13 @@ class gameFrame extends JFrame implements Runnable, KeyListener {
 	int playerStatus = 0; // 플레이어의 상태(평상시, 발사시 등)
 	int gameScore; // 점수
 	int playerLife; // 목숨
-	int loopCounter; // run()함수의 무한루프 횟수를 기록, 객체들의 행동 시간 구현
+	int loopCounter; // run()함수의 루프 횟수를 기록하여 객체들의 행동 시간 개념 구현
 
 	// 이미지 파일을 받아올 변수 선언
 	Image backgroundImg;
 	Image backgroundImg2;
-	Image[] meImg;
+	Image UIImg;
+	Image[] playerImg;
 	Image missileImg;
 	Image enemyImg;
 	Image enemyMissileImg;
@@ -123,43 +124,48 @@ class gameFrame extends JFrame implements Runnable, KeyListener {
 		// 선언된 변수값 설정
 		screenWidth = 1280;
 		screenHeight = 1024;
-		playerx = 470;
+		playerx = 410;
 		playery = 900;
 		playerSpeed = 10;
 		missileSpeed = 11;
-		fireSpeed = 15;
+		fireSpeed = 5;
 		enemySpeed = 7;
 		gameScore = 0;
 		playerLife = 3;
 
 		// 이미지 불러오기
-		backgroundImg = new ImageIcon("C:\\workspace\\Java\\src\\private_190313\\background.png").getImage();
+		backgroundImg = new ImageIcon("C:\\workspace\\Java\\src\\private_190313\\Image\\background.png").getImage();
 
-		meImg = new Image[5];
+		UIImg = new ImageIcon("C:\\workspace\\Java\\src\\private_190313\\Image\\UIImage.png").getImage();
 
-		for (int i = 0; i < meImg.length; ++i) {
+		playerImg = new Image[5];
 
-			meImg[i] = new ImageIcon("C:\\workspace\\Java\\src\\private_190313\\cat" + i + ".png").getImage();
+		for (int i = 0; i < playerImg.length; ++i) {
+
+			playerImg[i] = new ImageIcon("C:\\workspace\\Java\\src\\private_190313\\Image\\player" + i + ".png")
+					.getImage();
 
 		}
 
-		missileImg = new ImageIcon("C:\\Workspace\\Java\\src\\private_190313\\missile.png").getImage();
+		missileImg = new ImageIcon("C:\\Workspace\\Java\\src\\private_190313\\Image\\missile.png").getImage();
 
-		enemyImg = new ImageIcon("C:\\workspace\\Java\\src\\private_190313\\enemy.png").getImage();
+		enemyImg = new ImageIcon("C:\\workspace\\Java\\src\\private_190313\\Image\\enemy.png").getImage();
 
-		enemyMissileImg = new ImageIcon("C:\\Workspace\\Java\\src\\private_190313\\enemyMissile.png").getImage();
+		enemyMissileImg = new ImageIcon("C:\\Workspace\\Java\\src\\private_190313\\Image\\enemyMissile.png").getImage();
 
 		explosionImg = new Image[3];
 
 		for (int i = 0; i < explosionImg.length; ++i) {
 
-			explosionImg[i] = new ImageIcon("C:\\workspace\\Java\\src\\private_190313\\explosion" + i + ".png")
+			explosionImg[i] = new ImageIcon("C:\\workspace\\Java\\src\\private_190313\\Image\\explosion" + i + ".png")
 					.getImage();
 
 		}
 
 		// 소리 불러오기
-		Sound("C:\\Workspace\\Java\\src\\private_190313\\backGroundSound.wav", true);
+		// true는 지속적으로 출력
+		// false는 한번만 출력
+		Sound("C:\\Workspace\\Java\\src\\private_190313\\Sound\\backGroundSound.wav", true);
 
 	}
 
@@ -187,7 +193,7 @@ class gameFrame extends JFrame implements Runnable, KeyListener {
 	// implement된 Runnable에 동적바인딩 되어있는 Thread의 run()함수 내용 설정
 	// 프로그램이 실행되는 구조
 	// gameFrame클래스 객체 생성 → gameFrame()함수 실행 → 내부의 start()함수 실행 → 내부의 스레드 실행
-	//  → 내부의 run()함수 실행
+	// → 내부의 run()함수 실행
 	@Override
 	public void run() {
 
@@ -196,12 +202,22 @@ class gameFrame extends JFrame implements Runnable, KeyListener {
 			// 게임이 종료되기 전까지 계속 반복됨
 			while (true) {
 
-				keyProcess();
+				// 각 함수들을 동작시킴
+				playerMoveProcess();
 				missileProcess();
 				enemyProcess();
 				explosionProcess();
+
+				// paint()함수가 가지고 있으며 호출 시 repaint() → update() → paint() 순서로 함수가 호출된다
 				repaint();
-				Thread.sleep(20);
+				// 이 반복문에 그래픽을 바로 출력하면 스레드에서 각각의 이미지들을 그리기 시작해서 끝나는 부분까지
+				// 모두 보여주기 때문에 이미지들이 깜빡이기게 된다
+				// 이를 해결하기 위해 repaint()로 update()를 호출하여 이미지를 메모리에 모두 업데이트한 후
+				// paint()함수로 메모리에 최종적으로 그려진 그래픽을 한번만 출력한다
+				// (더블버퍼링 개념)
+
+				// 스레드를 잠깐 일시정지, (숫자)/1000초만큼 정지하며, 12/1000초는 약 80프레임으로 화면을 연산한다
+				Thread.sleep(12);
 
 				loopCounter++;
 
@@ -212,6 +228,38 @@ class gameFrame extends JFrame implements Runnable, KeyListener {
 			e.printStackTrace();
 
 		}
+
+	}
+
+	// !!중요!!
+	// java.awt.Image 클래스를 참조하는 ImageObserver 인터페이스의 Component가 상속하는
+	// Container.winows클래스의 paint 함수를 실행
+	// 그래픽 출력 이벤트를 처리함
+	@Override
+	public void paint(Graphics graphics) {
+
+		buffImage = createImage(screenWidth, screenHeight); // createImage() : 버퍼링용 화면 크기 설정
+		buffGraphics = buffImage.getGraphics(); // 생성된 이미지를 그릴 그래픽 객체를 생성한다
+		update(graphics); // update()가 paint()를 호출하기 때문에 반복적으로 함수가 실행된다
+
+	}
+
+	// JFrame 클래스의 update함수를 실행
+	// paint()함수가 가지고 있으며 처리한 이미지를 갱신함
+	@Override
+	public void update(Graphics graphics) {
+
+		// 이미지들을 그리는 함수
+		drawBackground();
+		drawPlayer();
+		drawEnemy();
+		drawMissile();
+		drawExplosion();
+		drawUI();
+		drawStatusText();
+
+		// 버퍼링용 화면에 그려진 이미지를 실제 화면으로 옮긴다
+		graphics.drawImage(buffImage, 0, 0, this);
 
 	}
 
@@ -294,8 +342,9 @@ class gameFrame extends JFrame implements Runnable, KeyListener {
 
 	}
 
-	// 
-	public void keyProcess() {
+	// 입력되는 키에 따라서 플레이어 기체의 좌표 움직임
+	// if문에 조건을 달아 화면 밖으로 플레이어 기체가 벗어나지 못하게 가둠
+	public void playerMoveProcess() {
 
 		if (KeyUp == true) {
 
@@ -347,26 +396,161 @@ class gameFrame extends JFrame implements Runnable, KeyListener {
 
 	}
 
-	@Override
-	public void paint(Graphics graphics) {
+	// !!중요!!
+	// 투사체 연산
+	public void missileProcess() {
 
-		buffImage = createImage(screenWidth, screenHeight);
-		buffGraphics = buffImage.getGraphics();
-		update(graphics);
+		if (KeyZ == true) { // Z 키가 눌려졌을 떄
+
+			// 플레이어 상태가 1번(발사중)으로 변한다
+			// drawPlayer() 함수 switch문의 조건에 참조되는 값
+			playerStatus = 1;
+
+			// 루프카운터 / 투사제 발사속도 나눗셈의 결과값이 0일 때 투사체를 발사한다
+			if ((loopCounter % fireSpeed) == 0) {
+
+				// 인자값이 적용된 새로운 Missile 객체를 생성
+				// missileList에 생성된 객체를 저장
+				// 인자 마지막은 투사체의 피아구분 여부(0은 아군의 미사일, 1은 적의 미사일)
+				missile = new Missile(playerx + 14, playery + 8, 90, missileSpeed, 0);
+				missileList.add(missile);
+				missile = new Missile(playerx + 22, playery + 4, 90, missileSpeed, 0);
+				missileList.add(missile);
+				missile = new Missile(playerx + 30, playery, 90, missileSpeed, 0);
+				missileList.add(missile);
+				missile = new Missile(playerx + 38, playery + 4, 90, missileSpeed, 0);
+				missileList.add(missile);
+				missile = new Missile(playerx + 46, playery + 8, 90, missileSpeed, 0);
+				missileList.add(missile);
+
+				// 해당 반복문 종료(Missile 객체 생성에 성공) 시 효과음 출력
+				Sound("C:\\Workspace\\Java\\src\\private_190313\\Fire.wav", false);
+
+			}
+
+		}
+
+		// 미사일 존재여부 확인
+		for (int i = 0; i < missileList.size(); ++i) {
+
+			// 위에서 저장한 missileList에 저장된 객체 지정
+			missile = (Missile) missileList.get(i);
+
+			// missile 객체가 가진 move()함수에 의해 연산된 값으로 객체 이동
+			missile.move();
+
+			// 만약 이동했을 때 화면을 벗어나게 된다면 해당 객체를 missileList에서 삭제
+			if (missile.x > screenWidth - 160 || missile.x < -40 || missile.y < 0 || missile.y > screenHeight) {
+				missileList.remove(i);
+			}
+
+			// crash()함수 호출
+			//
+			if (Crash(playerx, playery, missile.x, missile.y, playerImg[0], missileImg) && missile.who == 1) {
+
+				playerLife--;
+
+				explosion = new Explosion(playerx + playerImg[0].getWidth(null) / 2,
+						playery + playerImg[0].getHeight(null) / 2, 0);
+				explosionList.add(explosion);
+				missileList.remove(i);
+
+			}
+
+			for (int j = 0; j < enemyList.size(); ++j) {
+
+				enemy = (Enemy) enemyList.get(j);
+
+				if (Crash(missile.x, missile.y, enemy.x, enemy.y, missileImg, enemyImg) && missile.who == 0) {
+
+					missileList.remove(i);
+					enemy.enemyLife--;
+					if (enemy.enemyLife <= 0)
+						enemyList.remove(j);
+
+					gameScore += 10;
+
+					explosion = new Explosion(enemy.x + enemyImg.getWidth(null) / 2,
+							enemy.y + enemyImg.getHeight(null) / 2, 0);
+
+					explosionList.add(explosion);
+					Sound("C:\\Workspace\\Java\\src\\private_190313\\explosion.wav", false);
+
+				}
+
+			}
+
+		}
 
 	}
 
-	@Override
-	public void update(Graphics graphics) {
+	public void enemyProcess() {
 
-		drawBackground();
-		drawChar();
-		drawEnemy();
-		drawMissile();
-		drawExplosion();
-		drawStatusText();
+		for (int i = 0; i < enemyList.size(); ++i) {
 
-		graphics.drawImage(buffImage, 0, 0, this);
+			enemy = (Enemy) (enemyList.get(i));
+
+			enemy.move();
+
+			if (enemy.y > 900) {
+
+				enemyList.remove(i);
+
+			}
+
+			if (loopCounter % 50 == 0) {
+
+				missile = new Missile(enemy.x, enemy.y, 270, missileSpeed, 1);
+				missileList.add(missile);
+
+			}
+
+			if (Crash(playerx, playery, enemy.x, enemy.y, playerImg[0], enemyImg)) {
+
+				playerLife--;
+				enemyList.remove(i);
+
+				gameScore += 10;
+
+				explosion = new Explosion(enemy.x + enemyImg.getWidth(null) / 2,
+						enemy.y + playerImg[0].getHeight(null) / 2, 0);
+
+				explosionList.add(explosion);
+
+				explosion = new Explosion(playerx, playery, 1);
+
+				explosionList.add(explosion);
+
+			}
+
+		}
+
+		if (loopCounter % 200 == 0)
+
+		{
+			enemy = new Enemy(25, 50, enemySpeed);
+			enemyList.add(enemy);
+			enemy = new Enemy(115, 50, enemySpeed);
+			enemyList.add(enemy);
+			enemy = new Enemy(205, 50, enemySpeed);
+			enemyList.add(enemy);
+			enemy = new Enemy(295, 50, enemySpeed);
+			enemyList.add(enemy);
+			enemy = new Enemy(385, 50, enemySpeed);
+			enemyList.add(enemy);
+
+		}
+
+	}
+
+	public void explosionProcess() {
+
+		for (int i = 0; i < explosionList.size(); ++i) {
+
+			explosion = (Explosion) explosionList.get(i);
+			explosion.effect();
+
+		}
 
 	}
 
@@ -377,7 +561,7 @@ class gameFrame extends JFrame implements Runnable, KeyListener {
 		if (backgroundMove < screenHeight) {
 
 			buffGraphics.drawImage(backgroundImg, 0, backgroundMove - screenHeight, this);
-			backgroundMove += 20;
+			backgroundMove += 2;
 
 		} else {
 
@@ -388,18 +572,18 @@ class gameFrame extends JFrame implements Runnable, KeyListener {
 
 	}
 
-	public void drawChar() {
+	public void drawPlayer() {
 
 		switch (playerStatus) {
 
 		case 0:
 
 			if ((loopCounter / 5 % 2) == 0) {
-				buffGraphics.drawImage(meImg[1], playerx, playery, this);
+				buffGraphics.drawImage(playerImg[1], playerx, playery, this);
 
 			} else {
 
-				buffGraphics.drawImage(meImg[2], playerx, playery, this);
+				buffGraphics.drawImage(playerImg[2], playerx, playery, this);
 
 			}
 
@@ -409,11 +593,11 @@ class gameFrame extends JFrame implements Runnable, KeyListener {
 
 			if ((loopCounter / 5 % 2) == 0) {
 
-				buffGraphics.drawImage(meImg[3], playerx, playery, this);
+				buffGraphics.drawImage(playerImg[3], playerx, playery, this);
 
 			} else {
 
-				buffGraphics.drawImage(meImg[4], playerx, playery, this);
+				buffGraphics.drawImage(playerImg[4], playerx, playery, this);
 
 			}
 
@@ -519,6 +703,12 @@ class gameFrame extends JFrame implements Runnable, KeyListener {
 
 	}
 
+	public void drawUI() {
+
+		buffGraphics.drawImage(UIImg, 0, 0, this);
+
+	}
+
 	public void drawStatusText() {
 
 		buffGraphics.setFont(new Font("Defualt", Font.BOLD, 12));
@@ -528,142 +718,6 @@ class gameFrame extends JFrame implements Runnable, KeyListener {
 		buffGraphics.drawString("Enemy Count : " + enemyList.size(), 485, 130);
 		buffGraphics.drawString("x : " + playerx, 485, 150);
 		buffGraphics.drawString("y : " + playery, 485, 170);
-
-	}
-
-	public void missileProcess() {
-
-		if (KeyZ) {
-
-			playerStatus = 1;
-
-			if ((loopCounter % fireSpeed) == 0) {
-
-				missile = new Missile(playerx, playery, 90, missileSpeed, 0);
-				missileList.add(missile);
-				missile = new Missile(playerx, playery, 80, missileSpeed, 0);
-				missileList.add(missile);
-				missile = new Missile(playerx, playery, 100, missileSpeed, 0);
-				missileList.add(missile);
-
-				Sound("C:\\Workspace\\Java\\src\\private_190313\\Fire.wav", false);
-
-			}
-
-		}
-
-		for (int i = 0; i < missileList.size(); ++i) {
-
-			missile = (Missile) missileList.get(i);
-			missile.move();
-
-			if (missile.x > screenWidth - 160 || missile.x < -40 || missile.y < 0 || missile.y > screenHeight) {
-				missileList.remove(i);
-			}
-
-			if (Crash(playerx, playery, missile.x, missile.y, meImg[0], missileImg) && missile.who == 1) {
-
-				playerLife--;
-
-				explosion = new Explosion(playerx + meImg[0].getWidth(null) / 2, playery + meImg[0].getHeight(null) / 2,
-						0);
-				explosionList.add(explosion);
-				missileList.remove(i);
-
-			}
-
-			for (int j = 0; j < enemyList.size(); ++j) {
-
-				enemy = (Enemy) enemyList.get(j);
-
-				if (Crash(missile.x, missile.y, enemy.x, enemy.y, missileImg, enemyImg) && missile.who == 0) {
-
-					missileList.remove(i);
-					enemyList.remove(j);
-
-					gameScore += 10;
-
-					explosion = new Explosion(enemy.x + enemyImg.getWidth(null) / 2,
-							enemy.y + enemyImg.getHeight(null) / 2, 0);
-
-					explosionList.add(explosion);
-					Sound("C:\\Workspace\\Java\\src\\private_190313\\explosion.wav", false);
-
-				}
-
-			}
-
-		}
-
-	}
-
-	public void enemyProcess() {
-
-		for (int i = 0; i < enemyList.size(); ++i) {
-
-			enemy = (Enemy) (enemyList.get(i));
-
-			enemy.move();
-
-			if (enemy.y > 900) {
-
-				enemyList.remove(i);
-
-			}
-
-			if (loopCounter % 50 == 0) {
-
-				missile = new Missile(enemy.x, enemy.y, 270, missileSpeed, 1);
-				missileList.add(missile);
-
-			}
-
-			if (Crash(playerx, playery, enemy.x, enemy.y, meImg[0], enemyImg)) {
-
-				playerLife--;
-				enemyList.remove(i);
-
-				gameScore += 10;
-
-				explosion = new Explosion(enemy.x + enemyImg.getWidth(null) / 2, enemy.y + meImg[0].getHeight(null) / 2,
-						0);
-
-				explosionList.add(explosion);
-
-				explosion = new Explosion(playerx, playery, 1);
-
-				explosionList.add(explosion);
-
-			}
-
-		}
-
-		if (loopCounter % 200 == 0)
-
-		{
-			enemy = new Enemy(25, 50, enemySpeed);
-			enemyList.add(enemy);
-			enemy = new Enemy(115, 50, enemySpeed);
-			enemyList.add(enemy);
-			enemy = new Enemy(205, 50, enemySpeed);
-			enemyList.add(enemy);
-			enemy = new Enemy(295, 50, enemySpeed);
-			enemyList.add(enemy);
-			enemy = new Enemy(385, 50, enemySpeed);
-			enemyList.add(enemy);
-
-		}
-
-	}
-
-	public void explosionProcess() {
-
-		for (int i = 0; i < explosionList.size(); ++i) {
-
-			explosion = (Explosion) explosionList.get(i);
-			explosion.effect();
-
-		}
 
 	}
 
@@ -743,6 +797,7 @@ class gameFrame extends JFrame implements Runnable, KeyListener {
 		int x;
 		int y;
 		int enemySpeed;
+		int enemyLife = 30;
 
 		Enemy(int x, int y, int enemySpeed) {
 
