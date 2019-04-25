@@ -2,11 +2,11 @@ package study_190215;
 
 public class Champ {
 	
-	//·Îµù - ÃÊ±âÈ­(»ı¼ºÀÚ) = constructor
+	//ë¡œë”© - ì´ˆê¸°í™”(ìƒì„±ì) = constructor
 
 	public Champ(String name, String type, String spell, int armor, int mshield, int attack, int st, int mp) {
 
-		this.name = name; //µÚÀÇ name : ¸Å°³º¯¼ö
+		this.name = name; //ë’¤ì˜ name : ë§¤ê°œë³€ìˆ˜
 		this.type = type;
 		this.spell = spell;
 		this.armor = armor;
@@ -15,18 +15,18 @@ public class Champ {
 		this.st = st;
 		this.mp = mp;
 		
-		//this : ÀÚ±â°´Ã¼, ÀÚ±â class¿¡ °ªÀ» Àü´ŞÇØÁØ´Ù
-		//method ³»ºÎ¿¡ ÀÖ´Â º¯¼ö : Áö¿ªº¯¼ö
+		//this : ìê¸°ê°ì²´, ìê¸° classì— ê°’ì„ ì „ë‹¬í•´ì¤€ë‹¤
+		//method ë‚´ë¶€ì— ìˆëŠ” ë³€ìˆ˜ : ì§€ì—­ë³€ìˆ˜
 		
 	}
 	
-	String name; // ÄÉ¸¯ÅÍ¸í
-	String type; // ¾Ï»ìÀÚ, ¸¶¹ı»ç, ¿øµô, ¼­Æ÷ÅÍ, ÅÊÄ¿
-	String spell; //À¯Ã¼È­, Á¡¸ê, Á¡È­, ÅÚÆ÷, Å»Áø, °­Å¸
-	int armor; //¹æ¾î·Â
-	int mshield; //¸¶¹ıÀúÇ×·Â
-	int attack; //°ø°İ·Â
-	int st; //Ã¼·Â
-	int mp; //¸¶³ª
+	String name; // ì¼€ë¦­í„°ëª…
+	String type; // ì•”ì‚´ì, ë§ˆë²•ì‚¬, ì›ë”œ, ì„œí¬í„°, íƒ±ì»¤
+	String spell; //ìœ ì²´í™”, ì ë©¸, ì í™”, í…”í¬, íƒˆì§„, ê°•íƒ€
+	int armor; //ë°©ì–´ë ¥
+	int mshield; //ë§ˆë²•ì €í•­ë ¥
+	int attack; //ê³µê²©ë ¥
+	int st; //ì²´ë ¥
+	int mp; //ë§ˆë‚˜
 	
 }
